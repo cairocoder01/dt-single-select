@@ -11,18 +11,29 @@ export default {
   },
 };
 
-function Template({ name = 'my-input', options, placeholderLabel, value }) {
+function Template({ name = 'my-input', options, placeholderLabel, value, saveData, isLoading, isSaved }) {
   return html`
 <style>
 :root {
   --primary-color: #3f729b;
 }
 </style>
+<script>
+  window.saveFakeData = function (field, value, onSuccess, onError) {
+    console.log(field, value);
+    setTimeout(function () {
+      onSuccess();
+    }, 1000);
+  }
+</script>
     <dt-single-select
       name="${name}"
       placeholderLabel="${placeholderLabel}"
       options="${JSON.stringify(options)}"
       value="${value}"
+      saveData="${saveData}"
+      .isLoading="${isLoading}"
+      .isSaved="${isSaved}"
     >
       
     </dt-single-select>
@@ -76,4 +87,23 @@ ColorChange.args = {
     label: 'Pale Blue',
     color: '#aaaaff',
   }]
-}
+};
+
+export const AutoSave = Template.bind({});
+AutoSave.args = {
+  options: CustomOptions.args.options,
+  saveData: 'saveFakeData',
+};
+
+export const Loading = Template.bind({});
+Loading.args = {
+  value: 'opt2',
+  options: CustomOptions.args.options,
+  isLoading: true,
+};
+export const Saved = Template.bind({});
+Saved.args = {
+  value: 'opt2',
+  options: CustomOptions.args.options,
+  isSaved: true,
+};

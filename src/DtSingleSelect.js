@@ -4,13 +4,11 @@ export class DtSingleSelect extends LitElement {
   static get styles() {
     return css`
       :host {
-        display: block;
-        padding: 25px;
-        color: var(--dt-single-select-text-color, #000);
+        position: relative;
+        --borderWidth: 3px;
+        --borderColor: #78b13f;
       }
-      h2 {
-        color: var(--primary-color);
-      }
+      
       select {
         -webkit-appearance: none;
         -moz-appearance: none;
@@ -41,6 +39,53 @@ export class DtSingleSelect extends LitElement {
         width: 100%;
         text-transform: none;
       }
+      
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+    
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+      .loading-spinner::before {
+      content: '';
+        -webkit-animation: spin 1s linear infinite;
+        animation: spin 1s linear infinite;
+        border: 0.25rem solid #919191;
+        border-radius: 50%;
+        border-top-color: #000;
+        display: inline-block;
+        height: 1rem;
+        width: 1rem;
+      }
+      @keyframes fadeOut {
+        0% { opacity: 1; }
+        75% { opacity: 1; }        
+        100% { opacity: 0; }
+      }
+      .checkmark { margin-top: -0.25rem; }
+      .checkmark::before {
+        content: '';
+        transform: rotate(45deg);
+        height: 1rem;
+        width: 0.5rem;
+        opacity: 0;
+        border-bottom: var(--borderWidth) solid var(--borderColor);
+        border-right: var(--borderWidth) solid var(--borderColor);
+        animation: fadeOut 4s;
+        
+      }
+      .icon-overlay {
+        position: absolute;
+        right: 2rem;
+        top: 0; 
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;   
+      }
     `;
   }
 
@@ -60,7 +105,10 @@ export class DtSingleSelect extends LitElement {
       textColor: {
         type: String,
         state: true,
-      }
+      },
+      saveData: { type: String },
+      isLoading: { type: Boolean, attribute: false },
+      isSaved: { type: Boolean, attribute: false },
     };
   }
 
@@ -68,8 +116,10 @@ export class DtSingleSelect extends LitElement {
     super();
   }
 
+  /**
+   * Find the color for the currently selected value
+   */
   updateColor() {
-    console.log(this.value, this.options);
     if (this.value && this.options) {
       const options = this.options.filter(opt => opt.id === this.value);
       if (options && options.length) {
@@ -106,23 +156,35 @@ export class DtSingleSelect extends LitElement {
   }
 
   willUpdate(changedProperties) {
-    this.updateColor();
-    // only need to check changed properties for an expensive computation.
-    /*if (changedProperties.has('firstName') || changedProperties.has('lastName')) {
-      this.sha = computeSHA(`${this.firstName} ${this.lastName}`);
-    }*/
+    if (changedProperties.has('value')) {
+      this.updateColor();
+    }
   }
   _change (e) {
     this.value = e.target.value;
+
+    if (this.saveData && window[this.saveData]) {
+      this.isLoading = true;
+      this.isSaved = false;
+      window[this.saveData](this.name, this.value, () => {
+        this.isLoading = false;
+        this.isSaved = true;
+        console.log('success');
+      }, (err) => {
+        this.isLoading = false;
+        console.log('error');
+      })
+    }
   }
 
   render() {
-    /* return html`
-      <h2>${this.title} Nr. ${this.counter}!</h2>
-      <button @click=${this.__increment}>increment</button>
-    `; */
     return html`
-      <select name="${this.name}" @change="${this._change}" style="background-color: ${this.color}; color: ${this.textColor};">
+      <select 
+        name="${this.name}" 
+        @change="${this._change}" 
+        style="background-color: ${this.color}; color: ${this.textColor};"
+        ?disabled="${this.isLoading}"
+      >
         <option>${this.placeholderLabel}</option>
         
         ${this.options && this.options.map(i => html`
@@ -132,6 +194,8 @@ export class DtSingleSelect extends LitElement {
           >${i.label}</option>
         `)}
       </select>
+      ${this.isLoading ? html`<div class="icon-overlay loading-spinner"></div>` : null }
+      ${this.isSaved ? html`<div class="icon-overlay checkmark"></div>` : null }
 `;
   }
 }
