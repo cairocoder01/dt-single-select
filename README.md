@@ -2,6 +2,8 @@
 
 This webcomponent follows the [open-wc](https://github.com/open-wc/open-wc) recommendation.
 
+View [working demo](https://fantastic-valkyrie-169024.netlify.app/).
+
 ## Installation
 
 ```bash

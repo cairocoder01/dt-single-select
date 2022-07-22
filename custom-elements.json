@@ -43,37 +43,110 @@
           "members": [
             {
               "kind": "method",
-              "name": "__increment"
+              "name": "updateColor",
+              "description": "Find the color for the currently selected value"
+            },
+            {
+              "kind": "method",
+              "name": "isColorLight",
+              "parameters": [
+                {
+                  "name": "color"
+                }
+              ],
+              "description": "Test if a color is considered light or dark\nhttps://stackoverflow.com/questions/12043187/how-to-check-if-hex-color-is-too-black"
+            },
+            {
+              "kind": "method",
+              "name": "_change",
+              "parameters": [
+                {
+                  "name": "e"
+                }
+              ]
             },
             {
               "kind": "field",
-              "name": "title",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Hey there'",
+              "name": "name",
               "privacy": "public",
-              "attribute": "title"
+              "attribute": "name"
             },
             {
               "kind": "field",
-              "name": "counter",
-              "type": {
-                "text": "number"
-              },
-              "default": "5",
+              "name": "placeholderLabel",
               "privacy": "public",
-              "attribute": "counter"
+              "attribute": "placeholderLabel"
+            },
+            {
+              "kind": "field",
+              "name": "options",
+              "privacy": "public",
+              "attribute": "options"
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "privacy": "public",
+              "attribute": "value",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "color",
+              "privacy": "public",
+              "attribute": "color"
+            },
+            {
+              "kind": "field",
+              "name": "textColor",
+              "privacy": "public",
+              "attribute": "textColor"
+            },
+            {
+              "kind": "field",
+              "name": "saveData",
+              "privacy": "public",
+              "attribute": "saveData"
+            },
+            {
+              "kind": "field",
+              "name": "isLoading",
+              "privacy": "public"
+            },
+            {
+              "kind": "field",
+              "name": "isSaved",
+              "privacy": "public"
             }
           ],
           "attributes": [
             {
-              "name": "title",
-              "fieldName": "title"
+              "name": "name",
+              "fieldName": "name"
             },
             {
-              "name": "counter",
-              "fieldName": "counter"
+              "name": "placeholderLabel",
+              "fieldName": "placeholderLabel"
+            },
+            {
+              "name": "options",
+              "fieldName": "options"
+            },
+            {
+              "name": "value",
+              "fieldName": "value"
+            },
+            {
+              "name": "color",
+              "fieldName": "color"
+            },
+            {
+              "name": "textColor",
+              "fieldName": "textColor"
+            },
+            {
+              "name": "saveData",
+              "fieldName": "saveData"
             }
           ],
           "superclass": {
@@ -101,19 +174,35 @@
       "declarations": [
         {
           "kind": "variable",
-          "name": "Regular"
+          "name": "Empty"
         },
         {
           "kind": "variable",
-          "name": "CustomTitle"
+          "name": "CustomOptions"
         },
         {
           "kind": "variable",
-          "name": "CustomCounter"
+          "name": "CustomPlaceholder"
         },
         {
           "kind": "variable",
-          "name": "SlottedContent"
+          "name": "SelectedValue"
+        },
+        {
+          "kind": "variable",
+          "name": "ColorChange"
+        },
+        {
+          "kind": "variable",
+          "name": "AutoSave"
+        },
+        {
+          "kind": "variable",
+          "name": "Loading"
+        },
+        {
+          "kind": "variable",
+          "name": "Saved"
         }
       ],
       "exports": [
@@ -126,33 +215,65 @@
         },
         {
           "kind": "js",
-          "name": "Regular",
+          "name": "Empty",
           "declaration": {
-            "name": "Regular",
+            "name": "Empty",
             "module": "stories/index.stories.js"
           }
         },
         {
           "kind": "js",
-          "name": "CustomTitle",
+          "name": "CustomOptions",
           "declaration": {
-            "name": "CustomTitle",
+            "name": "CustomOptions",
             "module": "stories/index.stories.js"
           }
         },
         {
           "kind": "js",
-          "name": "CustomCounter",
+          "name": "CustomPlaceholder",
           "declaration": {
-            "name": "CustomCounter",
+            "name": "CustomPlaceholder",
             "module": "stories/index.stories.js"
           }
         },
         {
           "kind": "js",
-          "name": "SlottedContent",
+          "name": "SelectedValue",
           "declaration": {
-            "name": "SlottedContent",
+            "name": "SelectedValue",
+            "module": "stories/index.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "ColorChange",
+          "declaration": {
+            "name": "ColorChange",
+            "module": "stories/index.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "AutoSave",
+          "declaration": {
+            "name": "AutoSave",
+            "module": "stories/index.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "Loading",
+          "declaration": {
+            "name": "Loading",
+            "module": "stories/index.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "Saved",
+          "declaration": {
+            "name": "Saved",
             "module": "stories/index.stories.js"
           }
         }
