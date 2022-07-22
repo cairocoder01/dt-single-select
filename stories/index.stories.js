@@ -2,43 +2,56 @@ import { html } from 'lit';
 import '../dt-single-select.js';
 
 export default {
-  title: 'DtSingleSelect',
+  title: 'dt-single-select',
   component: 'dt-single-select',
   argTypes: {
-    title: { control: 'text' },
-    counter: { control: 'number' },
-    textColor: { control: 'color' },
+    name: { control: 'text' },
+    placeholderLabel: { control: 'text' },
+    value: { control: 'text' },
   },
 };
 
-function Template({ title = 'Hello world', counter = 5, textColor, slot }) {
+function Template({ name = 'my-input', options, placeholderLabel, value }) {
   return html`
+<style>
+:root {
+  --primary-color: #3f729b;
+}
+</style>
     <dt-single-select
-      style="--dt-single-select-text-color: ${textColor || 'black'}"
-      .title=${title}
-      .counter=${counter}
+      name="${name}"
+      placeholderLabel="${placeholderLabel}"
+      options="${JSON.stringify(options)}"
+      value="${value}"
     >
-      ${slot}
+      
     </dt-single-select>
   `;
 }
 
-export const Regular = Template.bind({});
+export const Empty = Template.bind({});
 
-export const CustomTitle = Template.bind({});
-CustomTitle.args = {
-  title: 'My title',
+export const CustomOptions = Template.bind({});
+CustomOptions.args = {
+  options: [{
+    id: 'opt1',
+    label: 'Option 1',
+  },{
+    id: 'opt2',
+    label: 'Option 2',
+  },{
+    id: 'opt3',
+    label: 'Option 3',
+  }],
 };
 
-export const CustomCounter = Template.bind({});
-CustomCounter.args = {
-  counter: 123456,
+export const CustomPlaceholder = Template.bind({});
+CustomPlaceholder.args = {
+  placeholderLabel: "--Select--",
 };
 
-export const SlottedContent = Template.bind({});
-SlottedContent.args = {
-  slot: html`<p>Slotted content</p>`,
-};
-SlottedContent.argTypes = {
-  slot: { table: { disable: true } },
+export const SelectedValue = Template.bind({});
+SelectedValue.args = {
+  value: 'opt2',
+  options: CustomOptions.args.options,
 };

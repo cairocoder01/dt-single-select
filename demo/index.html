@@ -7,6 +7,10 @@
       background: #fafafa;
     }
   </style>
+  <script type="module">
+    import { html, render } from 'lit';
+    import '../dt-single-select.js';
+  </script>
 </head>
 <body>
   <div id="demo"></div>
@@ -25,5 +29,9 @@
       document.querySelector('#demo')
     );
   </script>
+
+  <dt-single-select title="Custom Element">
+    some other dom
+  </dt-single-select>
 </body>
 </html>
