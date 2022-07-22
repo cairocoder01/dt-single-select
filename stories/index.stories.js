@@ -55,3 +55,25 @@ SelectedValue.args = {
   value: 'opt2',
   options: CustomOptions.args.options,
 };
+
+export const ColorChange = Template.bind({});
+ColorChange.args = {
+  value: 'opt1',
+  options: [{
+    id: 'opt1',
+    label: 'Red',
+    color: '#990000',
+  },{
+    id: 'opt2',
+    label: 'Green',
+    color: '#009900',
+  },{
+    id: 'opt3',
+    label: 'Blue',
+    color: '#000099',
+  },{
+    id: 'opt4',
+    label: 'Pale Blue',
+    color: '#aaaaff',
+  }]
+}
