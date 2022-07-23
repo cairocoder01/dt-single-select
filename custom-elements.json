@@ -4,6 +4,21 @@
   "modules": [
     {
       "kind": "javascript-module",
+      "path": "dt-multi-select.js",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "custom-element-definition",
+          "name": "dt-multi-select",
+          "declaration": {
+            "name": "DtMultiSelect",
+            "module": "/src/DtMultiSelect.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "dt-single-select.js",
       "declarations": [],
       "exports": [
@@ -28,6 +43,171 @@
           "declaration": {
             "name": "DtSingleSelect",
             "module": "./src/DtSingleSelect.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/DtMultiSelect.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "DtMultiSelect",
+          "members": [
+            {
+              "kind": "method",
+              "name": "_change",
+              "parameters": [
+                {
+                  "name": "e"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_remove",
+              "parameters": [
+                {
+                  "name": "e"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_focusInput",
+              "parameters": [
+                {
+                  "name": "e"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_inputFocusIn"
+            },
+            {
+              "kind": "method",
+              "name": "_inputFocusOut"
+            },
+            {
+              "kind": "method",
+              "name": "_inputKeyDown",
+              "parameters": [
+                {
+                  "name": "e"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_inputKeyUp",
+              "parameters": [
+                {
+                  "name": "e"
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "name",
+              "privacy": "public",
+              "attribute": "name"
+            },
+            {
+              "kind": "field",
+              "name": "placeholderLabel",
+              "privacy": "public",
+              "attribute": "placeholderLabel"
+            },
+            {
+              "kind": "field",
+              "name": "options",
+              "privacy": "public",
+              "attribute": "options"
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "privacy": "public",
+              "attribute": "value",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "open",
+              "privacy": "public",
+              "attribute": "open"
+            },
+            {
+              "kind": "field",
+              "name": "searchValue",
+              "privacy": "public",
+              "attribute": "searchValue"
+            },
+            {
+              "kind": "field",
+              "name": "saveData",
+              "privacy": "public",
+              "attribute": "saveData"
+            },
+            {
+              "kind": "field",
+              "name": "isLoading",
+              "privacy": "public"
+            },
+            {
+              "kind": "field",
+              "name": "isSaved",
+              "privacy": "public"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "name",
+              "fieldName": "name"
+            },
+            {
+              "name": "placeholderLabel",
+              "fieldName": "placeholderLabel"
+            },
+            {
+              "name": "options",
+              "fieldName": "options"
+            },
+            {
+              "name": "value",
+              "fieldName": "value"
+            },
+            {
+              "name": "open",
+              "fieldName": "open"
+            },
+            {
+              "name": "searchValue",
+              "fieldName": "searchValue"
+            },
+            {
+              "name": "saveData",
+              "fieldName": "saveData"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "dt-multi-select",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "DtMultiSelect",
+          "declaration": {
+            "name": "DtMultiSelect",
+            "module": "src/DtMultiSelect.js"
           }
         }
       ]
@@ -170,7 +350,82 @@
     },
     {
       "kind": "javascript-module",
-      "path": "stories/index.stories.js",
+      "path": "stories/DtMultiSelect.stories.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "Empty"
+        },
+        {
+          "kind": "variable",
+          "name": "CustomOptions"
+        },
+        {
+          "kind": "variable",
+          "name": "CustomPlaceholder"
+        },
+        {
+          "kind": "variable",
+          "name": "SelectedValue"
+        },
+        {
+          "kind": "variable",
+          "name": "OptionsWrap"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "stories/DtMultiSelect.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "Empty",
+          "declaration": {
+            "name": "Empty",
+            "module": "stories/DtMultiSelect.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "CustomOptions",
+          "declaration": {
+            "name": "CustomOptions",
+            "module": "stories/DtMultiSelect.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "CustomPlaceholder",
+          "declaration": {
+            "name": "CustomPlaceholder",
+            "module": "stories/DtMultiSelect.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "SelectedValue",
+          "declaration": {
+            "name": "SelectedValue",
+            "module": "stories/DtMultiSelect.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "OptionsWrap",
+          "declaration": {
+            "name": "OptionsWrap",
+            "module": "stories/DtMultiSelect.stories.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "stories/DtSingleSelect.stories.js",
       "declarations": [
         {
           "kind": "variable",
@@ -210,7 +465,7 @@
           "kind": "js",
           "name": "default",
           "declaration": {
-            "module": "stories/index.stories.js"
+            "module": "stories/DtSingleSelect.stories.js"
           }
         },
         {
@@ -218,7 +473,7 @@
           "name": "Empty",
           "declaration": {
             "name": "Empty",
-            "module": "stories/index.stories.js"
+            "module": "stories/DtSingleSelect.stories.js"
           }
         },
         {
@@ -226,7 +481,7 @@
           "name": "CustomOptions",
           "declaration": {
             "name": "CustomOptions",
-            "module": "stories/index.stories.js"
+            "module": "stories/DtSingleSelect.stories.js"
           }
         },
         {
@@ -234,7 +489,7 @@
           "name": "CustomPlaceholder",
           "declaration": {
             "name": "CustomPlaceholder",
-            "module": "stories/index.stories.js"
+            "module": "stories/DtSingleSelect.stories.js"
           }
         },
         {
@@ -242,7 +497,7 @@
           "name": "SelectedValue",
           "declaration": {
             "name": "SelectedValue",
-            "module": "stories/index.stories.js"
+            "module": "stories/DtSingleSelect.stories.js"
           }
         },
         {
@@ -250,7 +505,7 @@
           "name": "ColorChange",
           "declaration": {
             "name": "ColorChange",
-            "module": "stories/index.stories.js"
+            "module": "stories/DtSingleSelect.stories.js"
           }
         },
         {
@@ -258,7 +513,7 @@
           "name": "AutoSave",
           "declaration": {
             "name": "AutoSave",
-            "module": "stories/index.stories.js"
+            "module": "stories/DtSingleSelect.stories.js"
           }
         },
         {
@@ -266,7 +521,7 @@
           "name": "Loading",
           "declaration": {
             "name": "Loading",
-            "module": "stories/index.stories.js"
+            "module": "stories/DtSingleSelect.stories.js"
           }
         },
         {
@@ -274,7 +529,7 @@
           "name": "Saved",
           "declaration": {
             "name": "Saved",
-            "module": "stories/index.stories.js"
+            "module": "stories/DtSingleSelect.stories.js"
           }
         }
       ]
