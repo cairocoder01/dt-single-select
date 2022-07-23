@@ -162,6 +162,8 @@ export class DtMultiSelect extends LitElement {
       name: { type: String },
       placeholderLabel: { type: String },
       options: { type: Array },
+      filteredOptions: { type: Array, state: true },
+      allowAdd: { type: Boolean },
       value: {
         type: Array,
         reflect: true,
@@ -174,6 +176,10 @@ export class DtMultiSelect extends LitElement {
         type: String,
         state: true,
       },
+      activeIndex: {
+        type: Number,
+        state: true,
+      },
       containerHeight: {
         type: Number,
         state: true,
@@ -184,11 +190,20 @@ export class DtMultiSelect extends LitElement {
     };
   }
 
+  constructor() {
+    super();
+    this.activeIndex = -1;
+  }
+
+  firstUpdated() {
+    this._filterOptions();
+  }
+
   updated() {
     if (this.shadowRoot.children && this.shadowRoot.children.length) {
       this.containerHeight = this.shadowRoot.children[0].offsetHeight;
     }
-
+    this._scrollOptionListToActive();
   }
 
   _change (e) {
@@ -208,6 +223,27 @@ export class DtMultiSelect extends LitElement {
     // }
   }
 
+  /**
+   * When navigating via keyboard, keep active element within visible area of option list
+   * @private
+   */
+  _scrollOptionListToActive() {
+    const optionList = this.shadowRoot.querySelector('.option-list');
+    const activeEl = this.shadowRoot.querySelector('button.active');
+    if (optionList && activeEl) {
+      const elTop = activeEl.offsetTop;
+      const elBottom = activeEl.offsetTop + activeEl.clientHeight;
+      const listTop = optionList.scrollTop;
+      const listBottom = optionList.scrollTop + optionList.clientHeight;
+      if (elBottom > listBottom) {
+        // active element below visible area. scroll down
+        optionList.scrollTo({top: elBottom - optionList.clientHeight, behavior: 'smooth'});
+      } else if (elTop < listTop) {
+        // active element above visible area. scroll up
+        optionList.scrollTo({top: elTop, behavior: 'smooth'});
+      }
+    }
+  }
   _clickOption(e) {
     if (e.target && e.target.value) {
       this._select(e.target.value);
@@ -215,11 +251,16 @@ export class DtMultiSelect extends LitElement {
   }
 
   _select(value) {
-    this.value = [
-      ...this.value,
-      value,
-    ];
+    if (this.value && this.value.length) {
+      this.value = [
+        ...this.value,
+        value,
+      ];
+    } else {
+      this.value = [value];
+    }
     this.open = false;
+    this.activeIndex = -1;
   }
 
   _clickAddNew(e) {
@@ -240,6 +281,7 @@ export class DtMultiSelect extends LitElement {
 
   _inputFocusIn() {
     this.open = true;
+    this.activeIndex = -1;
   }
 
   _inputFocusOut(e) {
@@ -250,17 +292,63 @@ export class DtMultiSelect extends LitElement {
   }
 
   _inputKeyDown(e) {
-    if (e.target.value === '' && (e.key === 'Backspace' || e.keyCode === 8 || e.which === 8)) {
-      this.value = this.value.slice(0, -1);
+    const keycode = e.keyCode || e.which;
+    switch (keycode) {
+      case 8: // backspace
+        if (e.target.value === '') {
+          this.value = this.value.slice(0, -1);
+        }
+        break;
+      case 38: // arrow up
+        this.open = true;
+        this.activeIndex = Math.max(0, this.activeIndex - 1);
+        break;
+      case 40: // arrow down
+        this.open = true;
+        this.activeIndex = Math.min(this.filteredOptions.length - 1, this.activeIndex + 1);
+        break;
+      case 13: // tab
+      case 9: // enter
+        if (this.activeIndex > -1) {
+          this._select(this.filteredOptions[this.activeIndex].id);
+        }
+        break;
+      case 27: // escape
+        this.open = false;
+        this.activeIndex = -1;
+        break;
+      default:
+        break;
     }
   }
 
   _inputKeyUp(e) {
-    this.searchValue = e.target.value;
+    this.query = e.target.value;
+    this.filteredOptions = (this.options || []).filter(opt =>
+      (this.value || []).indexOf(opt.id) < 0
+      && (!this.query || opt.label.toLocaleLowerCase().includes(this.query.toLocaleLowerCase()))
+    );
+  }
+
+  /**
+   * Filter to options that:
+   *   1: are not selected
+   *   2: match the search query
+   * @private
+   */
+  _filterOptions() {
+    this.filteredOptions = (this.options || []).filter(opt =>
+      (this.value || []).indexOf(opt.id) < 0
+      && (!this.query || opt.label.toLocaleLowerCase().includes(this.query.toLocaleLowerCase()))
+    );
+    return this.filteredOptions;
   }
 
   render() {
-    const filteredOptions = this.options.filter(opt => (this.value || []).indexOf(opt.id) < 0);
+    // Filter out options that:
+    //  1: are already selected
+    //  2: match the searcy query
+    const filteredOptions = this._filterOptions();
     return html`
       <div class="field-container" @click="${this._focusInput}">
         ${this.options && this.options.filter(opt => this.value && this.value.indexOf(opt.id) > -1)
@@ -279,13 +367,18 @@ export class DtMultiSelect extends LitElement {
           />
       </div>
       <ul class="option-list" style="display:${this.open ? 'block' : 'none'};top:${this.containerHeight}px;">
-        ${filteredOptions.map(opt => html`
-          <li><button value="${opt.id}" @click="${this._clickOption}">${opt.label}</button></li>
+        ${this.filteredOptions.map((opt, idx) => html`
+          <li><button 
+                value="${opt.id}" 
+                @click="${this._clickOption}"
+                class="${this.activeIndex > -1 && this.activeIndex === idx ? 'active' : null}">
+            ${opt.label}
+          </button></li>
         `)}
         
         ${!filteredOptions.length ? html`<li><div>No options available</div></li>` : null }
         
-        ${this.searchValue ? html`<li><button @click="${this._clickAddNew}">Add "${this.searchValue}"</button></li>` : null }
+        ${this.allowAdd && this.query ? html`<li><button @click="${this._clickAddNew}">Add "${this.query}"</button></li>` : null }
       </ul>
       ${this.isLoading ? html`<div class="icon-overlay loading-spinner"></div>` : null }
       ${this.isSaved ? html`<div class="icon-overlay checkmark"></div>` : null }
